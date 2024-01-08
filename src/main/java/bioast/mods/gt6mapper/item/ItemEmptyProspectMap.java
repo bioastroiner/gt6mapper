@@ -84,4 +84,16 @@ public class ItemEmptyProspectMap extends ItemMapBase {
 	public void registerIcons(IIconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon(MapperMod.MODID + ":" + "emptyProspectingMap");
 	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack p_77653_1_) {
+		switch (p_77653_1_.getItemDamage()){
+			case 0: return "Local Prospecting Map Template (I)";
+			case 1: return "Regional Mineral-Prospect Map Template (II)";
+			case 2: return "Sub-Continental Resource Guide Map (III)";
+			case 3: return "Industrial Excavation Brief Map Template (IV)";
+			case 4: return "Mapped G.P.S Scanned Deep Mineral Info Template (V)";
+			default: return super.getItemStackDisplayName(p_77653_1_);
+		}
+	}
 }

@@ -1,12 +1,16 @@
 package bioast.mods.gt6mapper.proxy;
 
+import bioast.mods.gt6mapper.MapperMod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregapi.api.Abstract_Proxy;
+import gregapi.data.LH;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class CommonProxy extends Abstract_Proxy {
 
@@ -40,4 +44,17 @@ public class CommonProxy extends Abstract_Proxy {
 //        if (aEvent.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) {
 //        }
 //    }
+
+	@SubscribeEvent
+	public void tooltip(ItemTooltipEvent event){
+		if(event.itemStack.getItem() == MapperMod.mapEmpty){
+			if(event.itemStack.getItemDamage() < 5) event.toolTip.add("Scale: " + event.itemStack.getItemDamage());
+			else event.toolTip.add("Scale: 0");
+			event.toolTip.add(LH.Chat.GRAY + "Right Click to Use.");
+			event.toolTip.add(LH.Chat.BLINKING_RED + "Cannot Upgrade Once Written");
+			event.toolTip.add(LH.Chat.BLUE + "No Data");
+		} else if(event.itemStack.getItem() == MapperMod.mapWritten){
+			event.toolTip.add(LH.Chat.BLINKING_RED + "Info not available.");
+		}
+	}
 }

@@ -101,12 +101,23 @@ public class MapperMod extends Abstract_Mod {
         instance = this;
         proxy.preInit(aEvent);
         mapWritten = (ItemProspectMap) new ItemProspectMap().setUnlocalizedName("prospectingMap").setMaxStackSize(1);
-        mapEmpty = new ItemEmptyProspectMap().setUnlocalizedName("emptyProspectingMap").setMaxStackSize(1);
+        mapEmpty = new ItemEmptyProspectMap().setUnlocalizedName("emptyProspectingMap").setMaxStackSize(16);
         GameRegistry.registerItem(mapWritten, mapWritten.getUnlocalizedName(), MODID);
         GameRegistry.registerItem(mapEmpty, mapEmpty.getUnlocalizedName(), MODID);
         LH.add(mapWritten.getUnlocalizedName(), "Geographical Prospecting Map");
         LH.add(mapEmpty.getUnlocalizedName(), "Empty Geographical Prospecting Map");
-        CR.shaped(ST.make(mapEmpty, 1, W), CR.DEF, "XXX", "XBX", "XXX", 'X', OreDictionary.getOres("paper"), 'B', OD.itemRock);
+        CR.shaped(ST.make(mapEmpty, 1, 0), CR.DEF, "XXX", "XBX", "XXX", 'X', OreDictionary.getOres("paper"), 'B', OD.itemRock);
+        CR.shaped(ST.make(mapEmpty, 1, 1), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 0), 'G',IL.Sensor_ULV);
+        CR.shaped(ST.make(mapEmpty, 1, 1), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 0), 'G',IL.Sensor_LV);
+        CR.shaped(ST.make(mapEmpty, 1, 2), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 1), 'G',IL.Sensor_MV);
+        CR.shaped(ST.make(mapEmpty, 1, 2), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 1), 'G',IL.Sensor_HV);
+        CR.shaped(ST.make(mapEmpty, 1, 3), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 2), 'G',IL.Sensor_EV);
+        CR.shaped(ST.make(mapEmpty, 1, 4), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 3), 'G',IL.Sensor_IV);
+        CR.shaped(ST.make(mapEmpty, 2, 4), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 4), 'G',IL.Sensor_LuV);
+        CR.shaped(ST.make(mapEmpty, 4, 4), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 4), 'G',IL.Sensor_ZPM);
+        CR.shaped(ST.make(mapEmpty, 8, 4), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 4), 'G',IL.Sensor_UV);
+        CR.shaped(ST.make(mapEmpty, 16, 4), CR.DEF, " G ", " X ", " s ", 'X', ST.make(mapEmpty, 1, 4), 'G',IL.Sensor_PUV1);
+
         //RM.Printer.addFakeRecipe(F, ST.array(ST.make(mapEmpty, 1, W), IL.USB_Stick_1.getWithName(0, "Containing scanned Prospecting Map")), ST.array(ST.make(mapWritten, 1, W)), null, null, FL.array(FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Yellow], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Magenta], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Cyan], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Black], 1, 9, T)), ZL_FS, 64, 16, 0);
         //RM.ScannerVisuals.addFakeRecipe(F, ST.array(ST.make(mapWritten, 1, W), IL.USB_Stick_1.get(1)), ST.array(IL.USB_Stick_1.getWithName(1, "Containing scanned Prospecting Map"), ST.make(mapWritten, 1, W)), null, null, ZL_FS, ZL_FS, 64, 16, 0);
         // inject to gregapi.recipes.maps.RecipeMapPrinter.findRecipe some code to make recipes actually generate
