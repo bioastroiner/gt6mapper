@@ -4,6 +4,8 @@ import bioast.mods.gt6mapper.item.ItemEmptyProspectMap;
 import bioast.mods.gt6mapper.item.ItemProspectMap;
 import bioast.mods.gt6mapper.network.MapPacketHandler;
 import bioast.mods.gt6mapper.proxy.CommonProxy;
+import codechicken.nei.api.API;
+import com.google.common.collect.Lists;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -104,6 +106,13 @@ public class MapperMod extends Abstract_Mod {
         mapEmpty = new ItemEmptyProspectMap().setUnlocalizedName("emptyProspectingMap").setMaxStackSize(16);
         GameRegistry.registerItem(mapWritten, mapWritten.getUnlocalizedName(), MODID);
         GameRegistry.registerItem(mapEmpty, mapEmpty.getUnlocalizedName(), MODID);
+        API.addSubset("emptyProspectingMapVariants", Lists.newArrayList(
+            ST.make(mapEmpty,1,0),
+            ST.make(mapEmpty,1,1),
+            ST.make(mapEmpty,1,2),
+            ST.make(mapEmpty,1,3),
+            ST.make(mapEmpty,1,4)
+        ));
         LH.add(mapWritten.getUnlocalizedName(), "Geographical Prospecting Map");
         LH.add(mapEmpty.getUnlocalizedName(), "Empty Geographical Prospecting Map");
         CR.shaped(ST.make(mapEmpty, 1, 0), CR.DEF, "XXX", "XBX", "XXX", 'X', OreDictionary.getOres("paper"), 'B', OD.itemRock);

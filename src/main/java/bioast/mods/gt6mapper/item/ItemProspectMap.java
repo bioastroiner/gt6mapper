@@ -190,7 +190,6 @@ public class ItemProspectMap extends ItemMap {
 
 	@Override
 	public void onCreated(ItemStack WrittenMapStack, World par2World, EntityPlayer par3EntityPlayer) {
-		WrittenMapStack.setItemDamage(par2World.getUniqueDataId(STR_ID));
 //		String mapName = STR_ID + "_" + WrittenMapStack.getItemDamage();
 //		ProspectMapData mapData = new ProspectMapData(mapName);
 //		par2World.setItemData(mapName, mapData);

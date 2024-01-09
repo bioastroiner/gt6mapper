@@ -21,25 +21,22 @@ import java.util.Optional;
 // can have a meta data ranged from 0 to 4 corresponding to the size it will create
 public class ItemEmptyProspectMap extends ItemMapBase {
 	public static Pair<Short,ProspectMapData> existsMap(World par2World, EntityPlayer par3EntityPlayer, byte scale){
-		Object l = ((Map)UT.Reflection.getFieldContent(par2World.mapStorage,"idCounts",true,true)).getOrDefault( "prospectmap",-1);
-		int lastID;
-		if(l instanceof Short) lastID = (short) l;
-		if(l instanceof Integer) lastID = (int) l;
-		else return null;
+		short lastID = (short) par2World.mapStorage.idCounts.getOrDefault( "prospectmap",(short) -1);
 		if(lastID==-1) return null;
-		for (int j = 0; j <= lastID; j++) {
+		for (short j = 0; j <= lastID; j++) {
 			ProspectMapData data = (ProspectMapData) par2World.perWorldStorage.loadData(ProspectMapData.class, "prospectmap" + "_" + j);
 			if(data==null) continue;
 			int i = 128 * (1 << data.scale);
 			int x=(int) (Math.round(par3EntityPlayer.posX / (double) i) * (long) i);
 			int z=(int) (Math.round(par3EntityPlayer.posZ / (double) i) * (long) i);
-			if(x==data.xCenter&&z==data.zCenter&&scale==data.scale)return Pair.of((short) j,data);
+			if(x==data.xCenter&&z==data.zCenter&&scale==data.scale)return Pair.of(j,data);
 		}
 		return null;
 	}
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		byte scale = 0;
+		// generate a new unique ID only and only the scales & x,y coordinates do not match
+        byte scale = 0;
 		int meta = 0;
 		int i = 128 * (1 << scale);
 		int x=(int) (Math.round(par3EntityPlayer.posX / (double) i) * (long) i);
@@ -52,8 +49,7 @@ public class ItemEmptyProspectMap extends ItemMapBase {
 		if(mapData!=null){
 			meta = entry.getKey();
 			mapItem = new ItemStack(MapperMod.mapWritten, 1, meta);
-		}
-		else {
+		} else {
 			meta = par2World.getUniqueDataId(ItemProspectMap.STR_ID);
 			mapItem = new ItemStack(MapperMod.mapWritten, 1, meta);
 			String var5 = "prospectmap_" + mapItem.getItemDamage();
