@@ -90,13 +90,17 @@ public class ItemEmptyProspectMap extends ItemMapBase {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@SuppressWarnings("unchecked")
 	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List toolTip, boolean aShowAdvancedTooltip) {
 		switch (aStack.getItemDamage()){
 			case 0: toolTip.add(LH.Chat.RAINBOW_FAST + "Most Accurate Map");
 			case 1: toolTip.add(LH.Chat.RAINBOW_SLOW + "Accurate Map (2:1)");
 			case 2: toolTip.add(LH.Chat.GOLD + "(4:1)");
 			case 3: toolTip.add(LH.Chat.GOLD + "(8:1)");
-			case 4: toolTip.add(LH.Chat.BLINKING_GRAY + "only shows chunks"+LH.Chat.GOLD+" (16:1)");
+			case 4: toolTip.add(LH.Chat.BLINKING_GRAY + "EACH PIXEL = A CHUNK"+LH.Chat.GOLD+" (16:1)");
 		}
+		toolTip.add(LH.Chat.GRAY + "Right Click to Use");
+		toolTip.add(LH.Chat.BLINKING_RED + "Cannot Upgrade Once Written");
+		toolTip.add(LH.Chat.BLUE + "No Data");
 	}
 }

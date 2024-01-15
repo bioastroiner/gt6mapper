@@ -257,6 +257,7 @@ public class ItemProspectMap extends ItemMap {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@SuppressWarnings("unchecked")
 	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List toolTip, boolean aShowAdvancedTooltip) {
 		toolTip.add(LH.Chat.BLINKING_RED + "Info not available.");
 		switch (aStack.getItemDamage()){
