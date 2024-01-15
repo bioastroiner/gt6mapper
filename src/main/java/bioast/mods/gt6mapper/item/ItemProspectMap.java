@@ -4,7 +4,6 @@ import bioast.mods.gt6mapper.network.MapPacketHandler;
 import bioast.mods.gt6mapper.MapperMod;
 import bioast.mods.gt6mapper.world.ProspectMapData;
 import bioast.mods.gt6mapper.utils.ColorMap;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregapi.block.prefixblock.PrefixBlock;
@@ -17,11 +16,9 @@ import gregapi.recipes.Recipe;
 import gregapi.util.OM;
 import gregapi.util.ST;
 import gregapi.util.UT;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
@@ -35,11 +32,12 @@ import net.minecraft.world.storage.MapData;
 import static gregapi.data.CS.*;
 
 public class ItemProspectMap extends ItemMap {
-	public static final String STR_ID = "prospectmap";
+	public static final String MAP_ID_NAME = "prospectmap";
+	public static final String NBT_TAG = "prospect_map_id";
 
 	@SideOnly(Side.CLIENT)
 	public static ProspectMapData getMPMapData(int par0, World par1World) {
-		String mapName = STR_ID + "_" + par0;
+		String mapName = MAP_ID_NAME + "_" + par0;
 		ProspectMapData mapData = (ProspectMapData) par1World.loadItemData(ProspectMapData.class, mapName);
 		if (mapData == null) {
 			mapData = new ProspectMapData(mapName);
@@ -51,7 +49,7 @@ public class ItemProspectMap extends ItemMap {
     public static ItemStack getUSBFilled(ItemStack thisMap){
         ItemStack usb_written = ST.amount(0,IL.USB_Stick_1.get(1));
         UT.NBT.set(usb_written,UT.NBT.make());
-        usb_written.getTagCompound().setTag(NBT_USB_DATA, UT.NBT.make("prospect_map_id",thisMap.getItemDamage()));
+        usb_written.getTagCompound().setTag(NBT_USB_DATA, UT.NBT.make(NBT_TAG,thisMap.getItemDamage()));
         return usb_written;
     }
 
@@ -115,12 +113,12 @@ public class ItemProspectMap extends ItemMap {
 
 	@Override
 	public ProspectMapData getMapData(ItemStack par1ItemStack, World par2World) {
-		String mapName = STR_ID + "_" + par1ItemStack.getItemDamage();
+		String mapName = MAP_ID_NAME + "_" + par1ItemStack.getItemDamage();
 		ProspectMapData mapData = (ProspectMapData) par2World.loadItemData(ProspectMapData.class, mapName);
 
 		if (mapData == null && !par2World.isRemote) {
-			par1ItemStack.setItemDamage(par2World.getUniqueDataId(STR_ID));
-			mapName = STR_ID + "_" + par1ItemStack.getItemDamage();
+			par1ItemStack.setItemDamage(par2World.getUniqueDataId(MAP_ID_NAME));
+			mapName = MAP_ID_NAME + "_" + par1ItemStack.getItemDamage();
 			mapData = new ProspectMapData(mapName);
 			mapData.scale = 0;
 			int i = 128 * (1 << mapData.scale);
@@ -220,7 +218,7 @@ public class ItemProspectMap extends ItemMap {
 		if (mapBytes == null) return null;
 		else {
 			short uniqueID = (short) par1ItemStack.getItemDamage();
-			return MapPacketHandler.makeProspectingMapHandler(ItemProspectMap.STR_ID, uniqueID, mapBytes);
+			return MapPacketHandler.makeProspectingMapHandler(ItemProspectMap.MAP_ID_NAME, uniqueID, mapBytes);
 		}
 	}
 

@@ -128,7 +128,7 @@ public class MapperMod extends Abstract_Mod {
 //        FMLCommonHandler.instance().bus().register(eventListener); // we're getting events off this bus too
 
 		proxy.init(aEvent);
-		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemProspectMap.STR_ID).register(new MapPacketHandler());
+		NetworkRegistry.INSTANCE.newEventDrivenChannel(ItemProspectMap.MAP_ID_NAME).register(new MapPacketHandler());
         /*
         MultiTileEntityBlock aMachine = MultiTileEntityBlock.getOrCreate(MD.GT.mID, "machine"      , MaterialMachines.instance , Block.soundTypeMetal, TOOL_wrench , 0, 0, 15, F, F
         );

@@ -63,7 +63,7 @@ public class MapPacketHandler {
 	public void incomingPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
 //		System.out.println("Incoming packet detected!");
 
-		if (event.packet.channel().equals(ItemProspectMap.STR_ID)) {
+		if (event.packet.channel().equals(ItemProspectMap.MAP_ID_NAME)) {
 			//System.out.println("Incoming maze map packet detected!");
 
 			S34PacketMaps mapPacket = readMapPacket(event.packet.payload());

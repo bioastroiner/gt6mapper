@@ -4,19 +4,12 @@ import bioast.mods.gt6mapper.MapperMod;
 import bioast.mods.gt6mapper.world.ProspectMapData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregapi.util.UT;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 // can have a meta data ranged from 0 to 4 corresponding to the size it will create
 public class ItemEmptyProspectMap extends ItemMapBase {
@@ -50,7 +43,7 @@ public class ItemEmptyProspectMap extends ItemMapBase {
 			meta = entry.getKey();
 			mapItem = new ItemStack(MapperMod.mapWritten, 1, meta);
 		} else {
-			meta = par2World.getUniqueDataId(ItemProspectMap.STR_ID);
+			meta = par2World.getUniqueDataId(ItemProspectMap.MAP_ID_NAME);
 			mapItem = new ItemStack(MapperMod.mapWritten, 1, meta);
 			String var5 = "prospectmap_" + mapItem.getItemDamage();
 			mapData = new ProspectMapData(var5);
