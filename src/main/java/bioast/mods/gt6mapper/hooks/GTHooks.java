@@ -15,7 +15,7 @@ public class GTHooks {
 	public static Recipe onFindRecipe(Recipe.RecipeMap aMap, IHasWorldAndCoords aTileEntity, Recipe aRecipe,/*to make ASM happy & change less code as possible*/boolean aLoop, boolean aNotUnificated, long aSize, ItemStack aSpecialSlot, FluidStack[] aFluids, ItemStack... aInputs) {
 		Recipe rRecipe = aMap.findRecipeInternal(aTileEntity, aRecipe, aLoop, aNotUnificated, aSize, aSpecialSlot, aFluids, aInputs);
 		OnFindGTRecipeEvent event = new OnFindGTRecipeEvent(aMap, aRecipe, aNotUnificated, aTileEntity, aSize, aSpecialSlot, aInputs, aFluids);
-		MinecraftForge.EVENT_BUS.post(event)
+		MinecraftForge.EVENT_BUS.post(event);
 		if (aRecipe == null && event.aRecipeConsumer.get() != null)
 			return event.aRecipeConsumer.get();
 		return rRecipe;
