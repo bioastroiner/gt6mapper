@@ -17,10 +17,17 @@ import gregapi.data.*;
 import gregapi.oredict.OreDictManager;
 import gregapi.random.IHasWorldAndCoords;
 import gregapi.recipes.Recipe;
+import gregapi.tileentity.computer.ITileEntityUSBPort;
+import gregapi.tileentity.delegate.DelegatorTileEntity;
 import gregapi.util.CR;
+import gregapi.util.OM;
 import gregapi.util.ST;
+import gregapi.util.UT;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -156,19 +163,64 @@ public class MapperMod extends Abstract_Mod {
 	@SubscribeEvent
 	public void onRecipeEvent(GTHooks.OnFindGTRecipeEvent event) {
 		// TODO implement Copying & Printing Recipes for maps
-		Recipe ret = null;
+		Recipe rRecipe = null;
 		if (event.aRecipeMap == RM.Printer) {
-//            ret = new Recipe(F, F, F,
-//                    ST.array(ST.amount(1, tPaper), ST.amount(0, tUSB)),
-//                    ST.array(IL.TF_Maze_Map .getWithMeta(1, tMapID))
-//                    , null, null, FL.array(FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Black], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Cyan], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Magenta], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Yellow], 1, 9, T)), null, 64, 16, 0);
+			/* Print Maps in Machine*/
+			ItemStack tUSB = null, tPaper = null;
+			NBTTagCompound tData = null;
+			for (ItemStack aInput : event.aInputs)
+				if (aInput != null) {
+					if (tData == null) {
+						if (OM.is_(OD_USB_STICKS[1], aInput)) {
+							if (!aInput.hasTagCompound()) return;
+							tUSB = aInput;
+							tData = tUSB.getTagCompound().getCompoundTag(NBT_USB_DATA);
+						} else if (OM.is_(OD_USB_CABLES[1], aInput)) {
+							if (event.aTileEntity == null) return;
+							tUSB = aInput;
+							for (byte tSide : ALL_SIDES_VALID_ONLY[tUSB.hasTagCompound() && tUSB.getTagCompound().hasKey(NBT_USB_DIRECTION) ? tUSB.getTagCompound().getByte(NBT_USB_DIRECTION) : SIDE_ANY]) {
+								DelegatorTileEntity<TileEntity> tDelegator = event.aTileEntity.getAdjacentTileEntity(tSide);
+								if (tDelegator.mTileEntity instanceof ITileEntityUSBPort) {
+									tData = ((ITileEntityUSBPort) tDelegator.mTileEntity).getUSBData(tDelegator.mSideOfTileEntity, 1);
+									if (tData != null) if (tData.hasNoTags()) tData = null;
+									else break;
+								}
+							}
+						} else {
+							tPaper = aInput;
+						}
+					} else {
+						tPaper = aInput;
+					}
+				}
+			if (tData == null || tData.hasNoTags()) return;
+			short tMapID = (!tData.hasKey(ItemProspectMap.NBT_TAG)) ? -1 : tData.getShort(ItemProspectMap.NBT_TAG);
+			rRecipe = new Recipe(F, F, F,
+					ST.array(ST.amount(1, tPaper), ST.amount(0, tUSB)),
+					ST.array(ST.make(1, 1, tMapID))
+					, null, null, FL.array(FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Black], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Cyan], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Magenta], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Yellow], 1, 9, T)), null, 64, 16, 0);
 
 		} else if (event.aRecipeMap == RM.ScannerVisuals) {
-
+			/* Scan Maps in Machine*/
+			ItemStack tUSB = null, tScanned = null;
+			for (ItemStack aInput : event.aInputs)
+				if (ST.valid(aInput)) {
+					if (ST.invalid(tUSB) && OM.is_(OD_USB_STICKS[1], aInput)) tUSB = aInput;
+					else tScanned = aInput;
+					if (ST.valid(tUSB) && ST.valid(tScanned)) {
+						if (tScanned.getItem() == mapWritten) {
+							rRecipe = new Recipe(F, F, F, ST.array(ST.amount(1, tScanned), ST.amount(1, tUSB)), ST.array(ST.amount(1, tUSB), ST.amount(1, tScanned)), null, null, null, null, 64, 16, 0);
+							if (!rRecipe.mOutputs[0].hasTagCompound())
+								rRecipe.mOutputs[0].setTagCompound(UT.NBT.make());
+							rRecipe.mOutputs[0].getTagCompound().setTag(NBT_USB_DATA, UT.NBT.make(ItemProspectMap.NBT_TAG, ST.meta_(tScanned)));
+							rRecipe.mOutputs[0].getTagCompound().setByte(NBT_USB_TIER, (byte) 1);
+						}
+					}
+				}
 		}
 		// to dynamically generate Recipes !
 		// gregapi.recipes.maps.RecipeMapPrinter.findRecipe
-		event.accept(ret);
+		event.accept(rRecipe);
 	}
 
 	@Override
