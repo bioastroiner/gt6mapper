@@ -34,6 +34,12 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
+    compile("curse.maven:journeymap-32274:2367915")
+//    compile files("dependencies/Xaeros_Minimap_21.10.14_Forge_1.7.10-deobf.jar")
+//    compile files("dependencies/XaerosWorldMap_1.14.1.11_Forge_1.7.10-deobf.jar")
+//    compileOnly files("dependencies/voxelmap_1.7.0b-deobf.jar")
+
+
     compileOnly "appeng:appliedenergistics2:rv3-beta-6:dev"
     //compileOnly "com.hbm:hbm:1.0.27:dev"
     //api("com.github.GTNewHorizons:ModularUI2:2.0.6-1.7.10:dev")

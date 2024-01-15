@@ -16,6 +16,7 @@ import gregapi.recipes.Recipe;
 import gregapi.util.OM;
 import gregapi.util.ST;
 import gregapi.util.UT;
+import journeymap.client.model.Waypoint;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
+
+import java.awt.*;
+import java.util.List;
 
 import static gregapi.data.CS.*;
 
@@ -234,17 +238,12 @@ public class ItemProspectMap extends ItemMap {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
+		if(worldIn.isRemote && (player.isSneaking())){
+			new Waypoint("Charted Waypoint (%d) (%d)".formatted((int)player.posX,(int)player.posZ), (int) player.posX, (int) player.posY, (int) player.posZ, Color.BLUE, Waypoint.Type.Normal,worldIn.provider.dimensionId);
+		}
 		//if (!player.isSneaking()) toggleSize(itemStackIn, worldIn);
 		//if (player.isSneaking()) toggleColor(itemStackIn, worldIn);
 		return super.onItemRightClick(itemStackIn, worldIn, player);
-	}
-
-	public void toggleSize(ItemStack itemStackIn, World worldIn) {
-		getMapData(itemStackIn, worldIn).scale += 1;
-		if (getMapData(itemStackIn, worldIn).scale > 4) getMapData(itemStackIn, worldIn).scale = 0;
-		for (int i = 0; i < getMapData(itemStackIn, worldIn).colors.length; i++) {
-			getMapData(itemStackIn, worldIn).colors[i] = (byte) 0;
-		}
 	}
 
     // TODO: move this exclsively to Client Side
@@ -255,5 +254,17 @@ public class ItemProspectMap extends ItemMap {
 //				getMapData(itemStackIn, worldIn).colors[i] = (byte) (MapColor.obsidianColor.colorIndex * 4);
 //			}
 //		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List toolTip, boolean aShowAdvancedTooltip) {
+		toolTip.add(LH.Chat.BLINKING_RED + "Info not available.");
+		switch (aStack.getItemDamage()){
+			case 0: toolTip.add(LH.Chat.RAINBOW_FAST + "Each Pixel is a Block (1:1)");
+			case 1: toolTip.add(LH.Chat.RAINBOW + "Accurate Map (2:1)");
+			case 2: toolTip.add(LH.Chat.GOLD + "(4:1)");
+			case 3: toolTip.add(LH.Chat.GOLD + "(8:1)");
+			case 4: toolTip.add(LH.Chat.BLINKING_GRAY + "only shows chunks"+LH.Chat.GOLD+" (16:1)");
+		}
 	}
 }

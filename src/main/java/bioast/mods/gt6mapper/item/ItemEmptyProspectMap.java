@@ -4,12 +4,15 @@ import bioast.mods.gt6mapper.MapperMod;
 import bioast.mods.gt6mapper.world.ProspectMapData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregapi.data.LH;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 // can have a meta data ranged from 0 to 4 corresponding to the size it will create
 public class ItemEmptyProspectMap extends ItemMapBase {
@@ -77,12 +80,23 @@ public class ItemEmptyProspectMap extends ItemMapBase {
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 		switch (p_77653_1_.getItemDamage()){
-			case 0: return "Local Prospecting Map Template (I)";
-			case 1: return "Regional Mineral-Prospect Map Template (II)";
-			case 2: return "Sub-Continental Resource Guide Map (III)";
-			case 3: return "Industrial Excavation Brief Map Template (IV)";
-			case 4: return "Mapped G.P.S Scanned Deep Mineral Info Template (V)";
+			case 0: return "Lossless Charting Map (Empty)";
+			case 1: return "Large Accurate Map (Empty)";
+			case 2: return "Specific Charting Map (Empty)";
+			case 3: return "Regional Charting Map (Empty)";
+			case 4: return "Charting Map (Empty)";
 			default: return super.getItemStackDisplayName(p_77653_1_);
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List toolTip, boolean aShowAdvancedTooltip) {
+		switch (aStack.getItemDamage()){
+			case 0: toolTip.add(LH.Chat.RAINBOW_FAST + "Most Accurate Map");
+			case 1: toolTip.add(LH.Chat.RAINBOW_SLOW + "Accurate Map (2:1)");
+			case 2: toolTip.add(LH.Chat.GOLD + "(4:1)");
+			case 3: toolTip.add(LH.Chat.GOLD + "(8:1)");
+			case 4: toolTip.add(LH.Chat.BLINKING_GRAY + "only shows chunks"+LH.Chat.GOLD+" (16:1)");
 		}
 	}
 }

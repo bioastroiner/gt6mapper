@@ -53,8 +53,6 @@ public class CommonProxy extends Abstract_Proxy {
 			event.toolTip.add(LH.Chat.GRAY + "Right Click to Use.");
 			event.toolTip.add(LH.Chat.BLINKING_RED + "Cannot Upgrade Once Written");
 			event.toolTip.add(LH.Chat.BLUE + "No Data");
-		} else if(event.itemStack.getItem() == MapperMod.mapWritten){
-			event.toolTip.add(LH.Chat.BLINKING_RED + "Info not available.");
 		}
 	}
 }

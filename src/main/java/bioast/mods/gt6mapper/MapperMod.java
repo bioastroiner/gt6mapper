@@ -23,6 +23,9 @@ import gregapi.util.CR;
 import gregapi.util.OM;
 import gregapi.util.ST;
 import gregapi.util.UT;
+import journeymap.client.JourneymapClient;
+import journeymap.common.Journeymap;
+import journeymap.server.JourneymapServer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -143,21 +146,18 @@ public class MapperMod extends Abstract_Mod {
             .add("Cartography Table","Machines",0,0, MultiTileEntityCartographyTable.class,0,16,aMachine,
                 UT.NBT.make(CS.NBT_MATERIAL, MT.Steel));
                 */
-		CR.shaped(ST.make(mapEmpty, 1, 0), CR.DEF, "XsX", "CBM", "XXX", 'X', OP.plateDouble.mat(MT.Paper, 1, IL.Paper_Printed_Pages.get(1)), 'B', OD.itemRock, 'C', IL.Sensor_ULV, 'M', ST.make(Items.map, 1, W));
-		CR.shaped(ST.make(mapEmpty, 1, 1), CR.DEF, "XsX", "XBX", "XCX", 'X', OP.plateDouble.mat(MT.Paper, 1, IL.Paper_Printed_Pages.get(1)), 'B', ST.make(mapEmpty, 1, 0), 'C', IL.Sensor_MV);
-		CR.shaped(ST.make(mapEmpty, 1, 2), CR.DEF, "XsX", "XBX", "XCX", 'X', OP.plateDouble.mat(MT.Paper, 1, IL.Paper_Printed_Pages.get(1)), 'B', ST.make(mapEmpty, 1, 1), 'C', IL.Sensor_EV);
-		CR.shaped(ST.make(mapEmpty, 1, 3), CR.DEF, "XsX", "XBX", "XCX", 'X', OP.plateDouble.mat(MT.Paper, 1, IL.Paper_Printed_Pages.get(1)), 'B', ST.make(mapEmpty, 1, 2), 'C', IL.Sensor_IV);
-		CR.shaped(ST.make(mapEmpty, 1, 4), CR.DEF, "XsX", "XBX", "XCX", 'X', OP.plateDouble.mat(MT.Paper, 1, IL.Paper_Printed_Pages.get(1)), 'B', ST.make(mapEmpty, 1, 3), 'C', IL.Sensor_LuV);
-//        API.addSubset("emptyProspectingMapVariants", Lists.newArrayList(
-//            ST.make(mapEmpty,1,0),
-//            ST.make(mapEmpty,1,1),
-//            ST.make(mapEmpty,1,2),
-//            ST.make(mapEmpty,1,3),
-//            ST.make(mapEmpty,1,4)
-//        ));
+
+		/*Player Start with larger map not smaller map as they are less accurate and more broad*/
+		ItemStack mapHighScale = ST.make(mapEmpty,1,4);
+		//UT.NBT.set(mapHighScale,UT.NBT.make("basic",true,""))
+		CR.shaped(mapHighScale,CR.DEF,
+				"PlP",
+				"PMP",
+				"PPP",
+				'P',OD.paperEmpty,
+				'M',ST.make(Items.map,1,W));
 		RM.Printer.addFakeRecipe(F, ST.array(ST.make(mapEmpty, 1, W), IL.USB_Stick_1.getWithName(0, "Containing scanned Prospecting Map")), ST.array(ST.make(mapWritten, 1, W)), null, null, FL.array(FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Yellow], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Magenta], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Cyan], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Black], 1, 9, T)), ZL_FS, 64, 16, 0);
 		RM.ScannerVisuals.addFakeRecipe(F, ST.array(ST.make(mapWritten, 1, W), IL.USB_Stick_1.get(1)), ST.array(IL.USB_Stick_1.getWithName(1, "Containing scanned Prospecting Map"), ST.make(mapWritten, 1, W)), null, null, ZL_FS, ZL_FS, 64, 16, 0);
-
 	}
 
 	@SubscribeEvent
