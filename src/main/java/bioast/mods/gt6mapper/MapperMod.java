@@ -92,7 +92,6 @@ public class MapperMod extends Abstract_Mod {
 
 	@cpw.mods.fml.common.Mod.EventHandler
 	public final void onServerStarting(cpw.mods.fml.common.event.FMLServerStartingEvent aEvent) {
-		RM.Printer.findRecipe((IHasWorldAndCoords) null, (Recipe) null, true, 10L, null, ZL_FLUIDSTACK, ZL_ITEMSTACK);
 		onModServerStarting(aEvent);
 	}
 
@@ -150,11 +149,13 @@ public class MapperMod extends Abstract_Mod {
 		/*Player Start with larger map not smaller map as they are less accurate and more broad*/
 		ItemStack mapHighScale = ST.make(mapEmpty,1,4);
 		//UT.NBT.set(mapHighScale,UT.NBT.make("basic",true,""))
+//        CR.shapeless(mapHighScale,CR.DEF,new Object[]{
+//            ST.make(Items.map,1,W),
+//        });
 		CR.shaped(mapHighScale,CR.DEF,
-				"PlP",
-				"PMP",
-				"PPP",
-				'P',OD.paperEmpty,
+				"I",
+				"M",
+				"",
 				'M',ST.make(Items.map,1,W));
 		RM.Printer.addFakeRecipe(F, ST.array(ST.make(mapEmpty, 1, W), IL.USB_Stick_1.getWithName(0, "Containing scanned Prospecting Map")), ST.array(ST.make(mapWritten, 1, W)), null, null, FL.array(FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Yellow], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Magenta], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Cyan], 1, 9, T), FL.mul(DYE_FLUIDS_CHEMICAL[DYE_INDEX_Black], 1, 9, T)), ZL_FS, 64, 16, 0);
 		RM.ScannerVisuals.addFakeRecipe(F, ST.array(ST.make(mapWritten, 1, W), IL.USB_Stick_1.get(1)), ST.array(IL.USB_Stick_1.getWithName(1, "Containing scanned Prospecting Map"), ST.make(mapWritten, 1, W)), null, null, ZL_FS, ZL_FS, 64, 16, 0);

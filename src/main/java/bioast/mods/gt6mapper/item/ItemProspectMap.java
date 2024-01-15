@@ -239,7 +239,7 @@ public class ItemProspectMap extends ItemMap {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
 		if(worldIn.isRemote && (player.isSneaking())){
-			new Waypoint("Charted Waypoint (%d) (%d)".formatted((int)player.posX,(int)player.posZ), (int) player.posX, (int) player.posY, (int) player.posZ, Color.BLUE, Waypoint.Type.Normal,worldIn.provider.dimensionId);
+			new Waypoint(String.format("Charted Waypoint (%d) (%d)",(int)player.posX,(int)player.posZ), (int) player.posX, (int) player.posY, (int) player.posZ, Color.BLUE, Waypoint.Type.Normal,worldIn.provider.dimensionId);
 		}
 		//if (!player.isSneaking()) toggleSize(itemStackIn, worldIn);
 		//if (player.isSneaking()) toggleColor(itemStackIn, worldIn);
